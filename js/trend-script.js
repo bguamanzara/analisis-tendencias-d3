@@ -24,11 +24,12 @@ d3.csv("database.csv")
     });
     console.log(data)
 
-    // set the dimensions and margins of the graph
+    // Configurar los margenes del grafico
     var margin = { top: 10, right: 30, bottom: 30, left: 60 },
       width = 900 - margin.left - margin.right,
       height = 400 - margin.top - margin.bottom;
-    // append the svg object to the body of the page
+    
+    // Crear el grafico svg
     var svg = d3.select("#chart-area1")
       .append("svg")
       .attr("width", width + margin.left + margin.right)
@@ -37,7 +38,7 @@ d3.csv("database.csv")
       .attr("transform",
         "translate(" + margin.left + "," + margin.top + ")");
 
-    // Add X axis --> it is a date format
+    // Agregar el eje X con el atributo date
     var x = d3.scaleTime()
       .domain(d3.extent(data, function (d) { return d.date; }))
       .range([0, width]);
@@ -45,14 +46,14 @@ d3.csv("database.csv")
       .attr("transform", "translate(0," + height + ")")
       .call(d3.axisBottom(x));
 
-    // Add Y axis
+    //  Agregar el eje Y con los respectivos valores para cada date
     var y = d3.scaleLinear()
       .domain([3, 7])
       .range([height, 0]);
     svg.append("g")
       .call(d3.axisLeft(y));
 
-    // Add the line
+    // Agregar la linea del grafico
     svg.append("path")
       .datum(data)
       .attr("fill", "none")
@@ -63,7 +64,7 @@ d3.csv("database.csv")
         .y(function (d) { return y(d.value) })
       )
 
-    // Add the points
+    // Agregar puntos al grafico de los puntos pintados
     svg
       .append("g")
       .selectAll("dot")
@@ -83,21 +84,20 @@ d3.csv("database.csv")
       .append("div")
       .attr("class", "tooltip")
 
-    //BORRAR TOOLTIP
+    // Borrar tooltip
     function borrarTooltip() {
       tooltip
         .transition()
         .style("opacity", 0)
     }
 
-    //PINTAR TOOLTIP
+    // Dibujar Tooltip
     function pintarTooltip(d) {
       tooltip
         //.text (d.partido)
         .text(`${d.valueTooltip.toUpperCase()}: ${d.value}%`)
-        .style("top", d3.event.pageY + "px")  // TçE DA LA POSICION DONDE SE HA PRODUCIDO EL EVENTO
+        .style("top", d3.event.pageY + "px") 
         .style("left", parseInt(d3.event.pageX +20) + "px")
-        // PARA QUE LA APRICION DEL TOOLTIP NO SEA BRUSCA
         .transition()
         .style("opacity", 1)
 
